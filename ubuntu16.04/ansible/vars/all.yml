@@ -1,0 +1,25 @@
+---
+server:
+  install: '1'
+  packages: [vim, git, npm, nodejs]
+  timezone: Asia/Tokyo
+  locale: en_US.UTF-8
+nginx:
+  install: '1'
+  docroot: /var/www
+  servername: my-server
+mysql:
+  install: '1'
+  root_password: root
+  database: sample
+  user: user
+  password: password
+  dump: ''
+php:
+  install: '1'
+  ppa: php7.1
+xdebug:
+  install: '1'
+composer:
+  install: '1'
+

@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  become: yes
+  tasks:
+    - name: 基本パッケージをインストール
+      apt: name={{item}} state=present update_cache=yes
+      with_items:
+        - git
+        - vim
+    - name: php
+      apt: name=php state=
+     - name: nginx

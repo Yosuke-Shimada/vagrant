@@ -1,0 +1,14 @@
+---
+- name: Install Nginx
+  become: yes
+  apt: pkg=nginx state=latest
+
+- name: Change default nginx site
+  become: yes
+  template: >
+    src=site_available_default.tpl
+    dest=/etc/nginx/sites-available/default
+    owner=root
+    group=root
+    mode=0644
+  notify: restart nginx
