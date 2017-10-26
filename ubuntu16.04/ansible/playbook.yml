@@ -9,6 +9,5 @@
     - nginx
     - mysql
     - php
-    - xdebug
     - composer
     - app
