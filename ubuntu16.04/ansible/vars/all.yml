@@ -6,6 +6,7 @@ server:
   locale: en_US.UTF-8
 nginx:
   install: '1'
+  version: 1.10.3-0ubuntu0.16.04.2
   docroot: /var/www
   servername: my-server
 mysql:

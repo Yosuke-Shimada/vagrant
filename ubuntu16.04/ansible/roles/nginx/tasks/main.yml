@@ -1,7 +1,7 @@
 ---
 - name: Install Nginx
   become: yes
-  apt: pkg=nginx state=latest
+  apt: name=nginx={{ nginx.version }}
 
 - name: Change default nginx site
   become: yes
