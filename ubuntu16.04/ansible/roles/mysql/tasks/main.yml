@@ -5,11 +5,11 @@
 
 - name: mysql | Install MySQL Packages
   become: yes
-  apt: pkg={{ item }} state=latest
+  apt: pkg={{ item.name }}={{ item.version }}
   with_items:
-    - mysql-server
-    - mysql-client
-    - python-mysqldb
+    - { name: mysql-server,   version: "{{ mysql.version.server }}" }
+    - { name: mysql-client,   version: "{{ mysql.version.client }}" }
+    - { name: python-mysqldb, version: "{{ mysql.version.python }}" }
 
 - name: mysql | Update root password for all root accounts
   mysql_user: name=root host={{ item }} check_implicit_admin=yes password={{ mysql.root_password }} login_user=root login_password={{ mysql.root_password }}

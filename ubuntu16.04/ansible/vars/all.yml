@@ -11,10 +11,14 @@ nginx:
   servername: my-server
 mysql:
   install: '1'
+  version:
+    server: 5.7.20-0ubuntu0.16.04.1
+    client: 5.7.20-0ubuntu0.16.04.1
+    python: 1.3.7-1build2
   root_password: root
   database: sample
-  user: user
-  password: password
+  user: vagrant
+  password: vagrant
   dump: ''
 php:
   install: '1'
