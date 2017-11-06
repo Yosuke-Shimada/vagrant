@@ -5,9 +5,9 @@
   vars_files:
     - vars/all.yml
   roles:
-    - server
-    - nginx
-    - mysql
-    - php
-    - composer
-    - app
+   - server
+   - nginx
+   - mysql
+   - php
+   - composer
+   - app

@@ -7,8 +7,12 @@
   become: yes
   template: >
     src=site_available_default.tpl
-    dest=/etc/nginx/sites-available/default
+    dest=/etc/nginx/sites-available/{{ nginx.servername }}.conf
     owner=root
     group=root
     mode=0644
   notify: restart nginx
+
+- name: Delete default conf
+  become: yes
+  command: rm /etc/nginx/sites-available/default
