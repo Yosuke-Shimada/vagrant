@@ -1,0 +1,25 @@
+---
+- name: Install Nginx
+  become: yes
+  apt: name=nginx={{ nginx.version }}
+- command: chkconfig nginx on
+- command: service nginx restart
+
+- name: Change default nginx site
+  become: yes
+  template: >
+    src=site_available_default.tpl
+    dest=/etc/nginx/sites-available/{{ nginx.servername }}.conf
+    owner=root
+    group=root
+    mode=0644
+  notify: restart nginx
+
+- name: Delete default conf
+  become: yes
+  command: rm -f /etc/nginx/sites-available/default
+
+- name: Change welcome file
+  become: yes
+  command: mv /var/www/html/index.nginx-debian.html /var/www/html/index.html
+  command: echo "<? echo 'This is php file';" > /var/www/html/index.php

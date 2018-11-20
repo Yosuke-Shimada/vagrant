@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  connection: local
+  become: yes
+  vars_files:
+    - vars/all.yml
+  roles:
+   - server
+     #   - nginx
+     #   - mysql
+     #   - php
+     #   - composer
+     #   - app
