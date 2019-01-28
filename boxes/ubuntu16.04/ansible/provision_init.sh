@@ -1,9 +1,16 @@
 #! /bin/bash -e
 
-# cp public key
-echo "$(cat /vagrant/mnt/id_ecdsa_vagrant.pub)" >> ~/.ssh/authorized_keys
 # yum update all
 sudo apt-get update -y
+
+# dotfiles
+chmod 600 ~/.ssh/id_rsa
+cd ~
+if [ -e ./dotfiles ]; then
+  git clone git@github.com:chan-yo/dotfiles.git
+  /bin/bash ./bin/initialize/initialize.sh
+fi
+
 # ansible
 sudo apt-get install software-properties-common -y
 sudo apt-add-repository ppa:ansible/ansible -y

@@ -10,7 +10,7 @@ vagrant up
 # いろいろ実験したけど、ホスト側のコマンドの実行結果をゲスト側に渡すには以下の書き方しかうまくいかなかった
 # ゲスト側でチルダを使おうとしても、先に展開されるようでホスト側のパスが返ってしまう
 ssh_key_pub_body=`cat ~/.ssh/id_ecdsa_vagrant.pub`
-vagrant ssh -c "if ! grep '${ssh_key_pub_body}' /home/vagrant/.ssh/authorized_keys > /dev/null 2>&1; then echo '${ssh_key_pub_body}';fi"
+vagrant ssh -c "if ! grep '${ssh_key_pub_body}' /home/vagrant/.ssh/authorized_keys > /dev/null 2>&1; then echo '${ssh_key_pub_body}' >> /home/vagrant/.ssh/authorized_keys;fi"
 
 # vagrant ssh は256色が適用されないので使いたくないが、そうすると ssh-forward が利用できなくなるので、普段使っている鍵ファイルをコピーしておく
 hostname=`vagrant ssh-config | grep 'HostName ' | sed -e 's/ *HostName *//g'`
