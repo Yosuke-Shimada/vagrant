@@ -17,7 +17,10 @@ hostname=`vagrant ssh-config | grep 'HostName ' | sed -e 's/ *HostName *//g'`
 port=`vagrant ssh-config | grep 'Port ' | sed -e 's/ *Port *//g'`
 user=`vagrant ssh-config | grep 'User ' | sed -e 's/ *User *//g'`
 
-scp -P $port -i $COMMON_SSH_PRIVATE_KEY ~/.ssh/id_rsa $user@$hostname:/home/vagrant/.ssh/
+# 環境の再構築などでフィンガープリントが変化した場合、接続できないので再生成する
+ssh-keygen -R [${hostname}]:${port}
+
+scp -o StrictHostKeyChecking=no -P $port -i $COMMON_SSH_PRIVATE_KEY ~/.ssh/id_rsa $user@$hostname:/home/vagrant/.ssh/
 
 # ssh-config ファイルを読み込ませる
 if ! grep "Include ~/.ssh/conf.d/hosts/*" ~/.ssh/config > /dev/null; then
@@ -31,7 +34,7 @@ if [ ! -e $VM_SSH_CONFIG ]; then
 fi
 vm_hostname=`grep 'hostname' Vagrantfile | sed -r "s/^.*hostname * = ['\"](.*)['\"]/\1/g"`
 # Host 定義がない場合は先頭に追記(後勝ちなので、共通設定は最後に残しておく)
-if ! grep "${vm_hostname}" $VM_SSH_CONFIG; then
+if ! grep "Host ${vm_hostname}" $VM_SSH_CONFIG; then
   sed -i "1s/^/  User            ${user}\n/" $VM_SSH_CONFIG
   sed -i "1s/^/  Port            ${port}\n/" $VM_SSH_CONFIG
   sed -i "1s/^/  HostName        ${hostname}\n/" $VM_SSH_CONFIG
