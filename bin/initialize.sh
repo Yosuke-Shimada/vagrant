@@ -27,18 +27,16 @@ if ! grep "Include ~/.ssh/conf.d/hosts/*" ~/.ssh/config > /dev/null; then
   echo "Include ~/.ssh/conf.d/hosts/*" >> ~/.ssh/config;
 fi
 mkdir -p ~/.ssh/conf.d/hosts/
-# 専用の ssh-config ファイルがない場合は共通設定付きで新規作成
-if [ ! -e $VM_SSH_CONFIG ]; then
-  echo "Host *" > $VM_SSH_CONFIG
-  echo "  IdentityFile    ~/.ssh/id_ecdsa_vagrant" >> $VM_SSH_CONFIG
-fi
+# vm 作り直しなどで、過去に使用していたポートを再利用することがある。その場合に過去の時点で使用していた ssh-config が邪魔になるので、毎回作り直す
 vm_hostname=`grep 'hostname' Vagrantfile | sed -r "s/^.*hostname * = ['\"](.*)['\"]/\1/g"`
-# Host 定義がない場合は先頭に追記(後勝ちなので、共通設定は最後に残しておく)
 if ! grep "Host ${vm_hostname}" $VM_SSH_CONFIG; then
   sed -i "1s/^/  User            ${user}\n/" $VM_SSH_CONFIG
   sed -i "1s/^/  Port            ${port}\n/" $VM_SSH_CONFIG
   sed -i "1s/^/  HostName        ${hostname}\n/" $VM_SSH_CONFIG
   sed -i "1s/^/Host ${vm_hostname}\n/" $VM_SSH_CONFIG
 fi
+# 共通設定は後勝ちさせるために最後に記述する
+echo "Host *" >> $VM_SSH_CONFIG
+echo "  IdentityFile    ~/.ssh/id_ecdsa_vagrant" >> $VM_SSH_CONFIG
 
 echo -e "\e[30;42mplease use follow ssh command. ssh ${vm_hostname} \e[m"
